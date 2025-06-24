@@ -1,16 +1,30 @@
-name: Test Argo CD Connection
+name: CI-CD Java App
 
 on:
   push:
-    branches:
+    branches: [ "main" ]
 
 jobs:
-  test-argocd-auth:
+  build-and-deploy:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Make test API call to Argo CD
+    - name: Checkout code
+      uses: actions/checkout@v3
+
+    - name: Set up JDK 17
+      uses: actions/setup-java@v3
+      with:
+        java-version: '17'
+        distribution: 'temurin'
+
+    - name: Build with Maven
+      run: mvn clean install
+
+    - name: Run JUnit Tests
+      run: mvn test
+
+    - name: Trigger Argo CD Sync
       run: |
-        echo "Checking Argo CD application list..."
-        curl -k -X GET https://${{ secrets.ARGO_ENDPOINT }}/api/v1/applications \
-          -H "Authorization: Bearer ${{ secrets.ARGO_TOKEN }}"
+        curl -k -X POST https://${{ secrets.ARGO_ENDPOINT }}/api/v1/applications/${{ secrets.ARGO_APP_NAME }}/sync \
+        -H "Authorization: Bearer ${{ secrets.ARGO_TOKEN }}"
