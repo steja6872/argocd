@@ -1,0 +1,16 @@
+name: Test Argo CD Connection
+
+on:
+  push:
+    branches: [ main ]
+
+jobs:
+  test-argocd-auth:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Make test API call to Argo CD
+      run: |
+        echo "Checking Argo CD application list..."
+        curl -k -X GET https://${{ secrets.ARGO_ENDPOINT }}/api/v1/applications \
+          -H "Authorization: Bearer ${{ secrets.ARGO_TOKEN }}"
