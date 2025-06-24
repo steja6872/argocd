@@ -2,7 +2,7 @@ name: Test Argo CD Connection
 
 on:
   push:
-    branches: [ main ]
+    branches:
 
 jobs:
   test-argocd-auth:
