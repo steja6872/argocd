@@ -37,5 +37,5 @@ jobs:
 
     - name: Trigger Argo CD Sync
       run: |
-        curl -k -X POST https://${{ secrets.ARGOCD_ENDPOINT }}/api/v1/applications/${{ secrets.ARGOCD_APP_NAME }}/sync \
-        -H "Authorization: Bearer ${{ secrets.ARGOCD_TOKEN }}"
+        curl -k -X POST https://${{ secrets.ARGO_ENDPOINT }}/api/v1/applications/${{ secrets.ARGO_APP_NAME }}/sync \
+        -H "Authorization: Bearer ${{ secrets.ARGO_TOKEN }}"
